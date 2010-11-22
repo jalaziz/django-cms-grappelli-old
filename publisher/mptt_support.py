@@ -74,7 +74,8 @@ class MpttMeta:
         meta = main_cls._meta
         
         # Instanciate tree manager
-        TreeManager(cls).contribute_to_class(main_cls, meta.tree_manager_attr)
+        TreeManager(meta.parent_attr, meta.left_attr, meta.right_attr, 
+            meta.tree_id_attr, meta.level_attr).contribute_to_class(main_cls, meta.tree_manager_attr)
         
         # Add a custom tree manager
         #setattr(main_cls, meta.tree_manager_attr, tree_manager)
