@@ -12,7 +12,7 @@
 	var tree;
 	// global initTree function
 	initTree = function(){
-		tree = new tree_component();
+		tree = $.tree_create();
 		var options = {
 			rules: {
 				clickable: "all",
