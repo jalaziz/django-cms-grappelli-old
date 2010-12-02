@@ -16,8 +16,14 @@ select[name="plugins"] {
 .plugin-holder .form-row{
 	padding:0;
 }
-.plugin-holder label{
+.plugin-holder .column.span-4{
 	display:none;
+}
+.plugin-holder .column.span-flexible {
+   margin-left: 0px;
+}
+.plugin-holder .row.content {
+   padding: 0px;
 }
 
 .plugin-editor, .plugin-list-holder{
@@ -32,10 +38,6 @@ select[name="plugins"] {
 
 .plugin-holder .plugin-editor label{
 	display:block;
-}
-
-.plugin-holder{
-	background:url(../images/pluginlist-holder-bg.gif) repeat-y;		
 }
 
 .plugin-list-holder{

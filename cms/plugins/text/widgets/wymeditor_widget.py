@@ -14,7 +14,7 @@ class WYMEditor(Textarea):
             'wymeditor/jquery.wymeditor.js',
             'wymeditor/plugins/resizable/jquery.wymeditor.resizable.js',
             'js/wymeditor.placeholdereditor.js',
-            'js/lib/ui.core.js',
+            'js/lib/jquery-ui.custom.min.js',
             'js/placeholder_editor_registry.js',
         )]
         css = {

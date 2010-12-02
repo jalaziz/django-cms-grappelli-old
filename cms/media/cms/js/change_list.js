@@ -8,77 +8,83 @@
 		return this.after(o).remove().end(); 
 	};
 
-
 	var tree;
 	// global initTree function
 	initTree = function(){
-		tree = $.tree_create();
-		var options = {
-			rules: {
-				clickable: "all",
-				renameable: "none",
-				deletable: "all",
-				creatable: "all",
-				draggable: "all",
-				dragrules: "all",
-				droppable: "all",
-				metadata : "mdata",
-				use_inline: true
-				//droppable : ["tree_drop"]
-			},
-			path: false,
-			ui: {
-				dots: true,
-				rtl: false,
-				animation: 0,
-				hover_mode: true,
-				theme_path: false,
-				theme_name: "default",
-				a_class: "title"
-			},
-			cookies : {},
-			callback: {
-				beforemove  : function(what, where, position, tree) {
-					item_id = what.id.split("page_")[1];
-					target_id = where.id.split("page_")[1];
-					old_node = what;
-					if($(what).parent().children("li").length > 1){
-						if($(what).next("li").length){
-							old_target = $(what).next("li")[0];
-							old_position = "right";
-						}
-						if($(what).prev("li").length){
-							old_target = $(what).prev("li")[0];
-							old_position = "left";
-						}
-					}else{
-						if($(what).attr("rel") != "topnode"){
-							old_target = $(what).parent().parent()[0];
-							old_position = "inside";
-						}
-					}
-					
-					addUndo(what, where, position);
-					return true; 
-				},
-				onmove: function(what, where, position, tree){
-					item_id = what.id.split("page_")[1];
-					target_id = where.id.split("page_")[1];
-					if (position == "before") {
-						position = "left";
-					}else if (position == "after") {
-						position = "right";
-					}else if(position == "inside"){
-						position = "last-child";
-					}
-					moveTreeItem(what, item_id, target_id, position, false);
-				},
-				onchange: function(node, tree){
-					var url = $(node).find('a.title').attr("href");
-					self.location = url;
-				}
-			}
-		};
+
+	   $("div.tree")
+         .bind("select_node.jstree deselect_node.jstree", function(e, data) {
+            var url = $(data.args[0]).attr("href");
+			   self.location = url;
+         })
+         .bind("before.jstree", function(e, data) {
+            if(data.func == "move_node") {
+               if(data.args[4] == true) {
+                  var what = data.args[0].o;
+                  var where = data.args[0].r;
+                  var position = data.args[0].p;
+                  var item_id = what.attr("id").split("page_")[1];
+				      var target_id = where.attr("id").split("page_")[1];
+				      var old_node = what;
+				      
+				      if($(what).parent().children("li").length > 1){
+					      if($(what).next("li").length){
+						      old_target = $(what).next("li")[0];
+						      old_position = "right";
+					      }
+					      if($(what).prev("li").length){
+						      old_target = $(what).prev("li")[0];
+						      old_position = "left";
+					      }
+				      }else{
+					      if($(what).attr("rel") != "topnode"){
+						      old_target = $(what).parent().parent()[0];
+						      old_position = "inside";
+					      }
+				      }
+				
+				      addUndo(what, where, position);
+				   }
+			   }
+         })
+         .bind("move_node.jstree", function(e, data) {
+            var item_id = data.rslt.o.attr("id").split("page_")[1];
+			   var target_id = data.rslt.r.attr("id").split("page_")[1];
+			   var position = data.rslt.p;
+			
+			   if (position== "before") {
+				   position = "left";
+			   }else if (position == "after") {
+				   position = "right";
+			   }else if(position == "inside"){
+				   position = "last-child";
+			   }
+			   moveTreeItem(data.rslt.o, item_id, target_id, position, false);
+         })
+         .jstree({
+            "core": {
+               "html_titles": true,
+               "animation": 0
+            },
+            "ui": {
+               "select_limit": 1,
+               "select_prev_on_delete": false,
+               "select_parent_close": "deselect"
+            },
+            "themes": {
+               "theme": "cms",
+               "dots": true,
+               "icons": false
+            },
+            "dnd": {
+               "drop_target": false,
+               "drag_target": false
+            },
+            "ccrm": {
+            
+            },
+            "plugins": [ "themes", "ui", "html_data", "dnd", "ccrm", "cookie"]
+         });
 		
 		
 		if (!$($("div.tree").get(0)).hasClass('root_allow_children')){
@@ -86,10 +92,6 @@
 			// have permissions for this
 			options.rules.dragrules = ["node inside topnode", "topnode inside topnode", "node * node"];
 		}
-		
-		//dragrules : [ "folder * folder", "folder inside root", "tree-drop * folder" ],
-	        
-		tree.init($("div.tree"), options);
 	};
 	
 	$(document).ready(function() {	
