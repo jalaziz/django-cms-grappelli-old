@@ -131,7 +131,7 @@ class PageAdmin(model_admin):
         }),
         (_('Advanced Settings'), {
             'fields': advanced_fields,
-            'classes': ('collapse',),
+            'classes': ('collapse', 'closed'),
         }),
 
 
