@@ -15,22 +15,16 @@
 {% block coltype %}flex{% endblock %}
 {% block extrahead %}
     <link rel="stylesheet" type="text/css" href="{{ CMS_MEDIA_URL }}css/pages.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ CMS_MEDIA_URL }}jstree/tree_component.css" />
     <link rel="stylesheet" type="text/css" href="{{ CMS_MEDIA_URL }}css/jquery.dialog.css" />
     
     {{ block.super }}
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.livequery.js"></script>
-    
-    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/ui.core.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.bind.js"></script>
-    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/ui.checkbox.js"></script>
-    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/effects.core.js"></script>
-    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/effects.highlight.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.form.js"></script>
-    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}jstree/_lib/_all.js"></script>
-    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}jstree/tree_component.js"></script>
-    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/ui.dialog.js"></script>
+    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}jstree/jquery.jstree.js"></script>
+    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery-ui.custom.min.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/functional.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/tools.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/change_list.js"></script>
@@ -57,30 +51,29 @@
 {% block content %}
     <script type="text/javascript">
     //<![CDATA[	
-        (function($) {
-        	$(document).ready(function() {
+        $(function() {
         		{% if not cl.is_filtered %}
         			initTree();
         		{% endif %}		
-        	});
         	
-        	moveSuccess = function(node){
-        		var msg = $('<span class="success">{% trans "Successfully moved" %}</span>');
-        		node.append(msg);
-        	    msg.fadeOut(3000);
-        	}
-        	moveError = function(node){
-        		var msg = $('<span class="success">{% trans "An error occured. Please reload the page" %}</span>');
-        		node.append(msg);
-        	}
-        	// some settings used by javascript functions
-        
-        	cmsSettings = {
-        		cmsPermission: {{ CMS_PERMISSION|js }},
-        		cmsModerator: {{ CMS_MODERATOR|js }},
-        		debug: {{ DEBUG|js }}
-        	};
-        })(jQuery);
+        	
+           	moveSuccess = function(node){
+           		var msg = $('<span class="success">{% trans "Successfully moved" %}</span>');
+           		node.append(msg);
+           	    msg.fadeOut(3000);
+           	}
+           	moveError = function(node){
+           		var msg = $('<span class="success">{% trans "An error occured. Please reload the page" %}</span>');
+           		node.append(msg);
+           	}
+           	// some settings used by javascript functions
+           
+           	cmsSettings = {
+           		cmsPermission: {{ CMS_PERMISSION|js }},
+           		cmsModerator: {{ CMS_MODERATOR|js }},
+           		debug: {{ DEBUG|js }}
+           	};
+        });
     //]]>
     </script>
     
@@ -88,7 +81,8 @@
     <div class="module changelist-filters">
         {% if cl.has_filters or cl.search_fields %}
             {% if cl.has_access_to_multiple_sites %}
-            <div id="site-selector" class="module site-selector">{% trans "Pages on:" %}
+            <div id="site-selector" class="module site-selector">
+               <label>{% trans "Pages on:" %}</label>
                 <select id="site-select">
                     {% for site in cl.sites %}
                     <option {% ifequal site.pk cl.current_site.pk %}selected {% endifequal %}value="{{ site.pk }}">{{ site.name }}</option>
@@ -127,5 +121,6 @@
     <div id="changelist" class="container-full{% if cl.list_editable %} editable{% endif %}">
     {% include "admin/cms/page/change_list_tree.html" %}
     </div>
+    <div id="vakata-contextmenu"></div>
     <div id="dialogs"></div>
 {% endblock %}
