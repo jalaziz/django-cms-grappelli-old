@@ -50,7 +50,10 @@ select[name="plugins"] {
 	padding:10px;
 }
 .plugin-list-holder .add-plugin, .plugin-list-holder .copy-plugins {
-	margin-left:10px;
+   background: no-repeat 0 50%;
+   width: auto;
+   height: auto;
+	padding-left:14px;
 	cursor:pointer;
 }
 
@@ -113,7 +116,12 @@ ul.plugin-list li.active:hover .drag{background-position:0px -40px;}
 	margin-left:300px;
 	/*margin:10px 0px 10px 310px;*/
 	padding:0px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+   border: 1px solid #E0E0E0;
 	float:none;
+	background-color: #fff;
 }
 
 .plugin-editor iframe{

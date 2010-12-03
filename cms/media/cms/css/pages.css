@@ -363,8 +363,8 @@ div#sitemap ul.header li .cont{
    background: #eee;
    background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#e0e0e0));
    background: -moz-linear-gradient(top, #eee, #e0e0e0);
-   -moz-border-radius-topleft: 5px;
-   -moz-border-radius-topright: 5px;
+   border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px;
+   border-top-right-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px;
 }
 div#sitemap ul.header li .col1 {
    padding: 5px 10px;

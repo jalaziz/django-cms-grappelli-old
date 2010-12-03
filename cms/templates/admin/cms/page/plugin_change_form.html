@@ -38,7 +38,7 @@
 		window.onload = runOnLoad.run;
 	}
 	runOnLoad(function(){
-		parent.setiframeheight($('body').height()+20, {{ plugin.pk }});
+		parent.setiframeheight($('#container').height(), {{ plugin.pk }});
 	});
 	$(document).ready(function(){
 		$("a.add-another,a.related-lookup").each(function(i, sign){
