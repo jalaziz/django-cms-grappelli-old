@@ -19,12 +19,12 @@
     
     {{ block.super }}
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.js"></script>
+    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery-ui.custom.min.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.livequery.js"></script>
-    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.bind.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.form.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery.cookie.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}jstree/jquery.jstree.js"></script>
-    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/jquery-ui.custom.min.js"></script>
+    <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/ui.checkbox.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/lib/functional.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/tools.js"></script>
     <script type="text/javascript" src="{{ CMS_MEDIA_URL }}js/change_list.js"></script>
@@ -54,8 +54,12 @@
         $(function() {
         		{% if not cl.is_filtered %}
         			initTree();
-        		{% endif %}		
-        	
+        		{% endif %}
+        		
+        		// moderation checkboxes over livequery
+	         $('div.col-moderator input').livequery(function() {
+		         $(this).checkBox({addLabel:false});
+	         });
         	
            	moveSuccess = function(node){
            		var msg = $('<span class="success">{% trans "Successfully moved" %}</span>');

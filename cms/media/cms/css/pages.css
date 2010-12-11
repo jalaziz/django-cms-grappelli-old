@@ -6,7 +6,9 @@
 #sitemap li .col-moderator span.ui-checkbox {
 	width: 18px;
 	height: 18px;
+	padding: 0;
 	display: inline-block;
+	vertical-align: middle;
 	background: url(../images/icons.png) 0px 0px no-repeat;
 }
 
@@ -22,6 +24,11 @@
 }
 #sitemap li .col2{
 	float:right;
+}
+
+table {
+   width: 100%;
+   margin-bottom: 5px;
 }
 
 .module.changelist-filters {
@@ -270,10 +277,8 @@ div#sitemap li, div#sitemap ul{list-style-type: none;}
 #sitemap li .col-language a{text-transform:uppercase;}
 #sitemap li .col-language a:hover{text-decoration:underline;}
 
-#sitemap li .col-actions a{ vertical-align:middle}
 #sitemap li .col-published a, #sitemap li .col-published input, #sitemap li .col-published label{ vertical-align:middle;}
 #sitemap li .col-navigation a, #sitemap li .col-navigation input, #sitemap li .col-navigation label{ vertical-align:middle;}
-#sitemap li .col-draft a, #sitemap li .col-draft span{vertical-align:middle; margin-top:0;}
 #sitemap li  .col-navigation img{vertical-align:middle;}
 #sitemap li  .col-softroot span{vertical-align:middle;}
 
@@ -295,43 +300,27 @@ div#sitemap li, div#sitemap ul{list-style-type: none;}
 
 
 #sitemap li a.move {
-	width:18px;
-	height:18px;
-	padding: 0;
 	margin: 0 1px;
-	display:inline-block;
-	background:url(../images/icons.png) -20px -20px no-repeat; 
+	background-position: -20px -20px;
 }
 #sitemap li a.move span{display:none;}
 
 #sitemap li a.copy {
-	width:18px;
-	height:18px;
-	padding: 0;
 	margin: 0 1px;
-	display:inline-block;
-	background:url(../images/icons.png) 0px -40px no-repeat; 
+	background-position: -20px -40px;
 }
 
 #sitemap li a.copy span{display:none;}
 
 #sitemap li a.add {
-	width:18px;
-	height:18px;
-	padding: 0;
 	margin: 0 1px;
-	display:inline-block;
-	background:url(../images/icons.png) -40px 0px no-repeat; 
+	background-position: -40px 0px;
 }
 #sitemap li a.add span{display:none;}
 
 #sitemap li a.delete {
-	width:18px;
-	height:18px;
-	padding: 0;
 	margin: 0 1px;
-	display:inline-block;
-	background:url(../images/icons.png) -40px -40px no-repeat; 
+	background-position: -40px -40px;
 }
 
 #sitemap li a.delete span{display:none;}
@@ -342,10 +331,10 @@ div#sitemap li, div#sitemap ul{list-style-type: none;}
 }
 
 #sitemap li .col-draft a.approve {
-	margin-left:4px;
 	background-position: -60px -80px;
-	margin-top:-4px;
 }
+
+#sitemap li a.approve span{display:none;}
 
 #sitemap li a.selector-add span{display:none;}
 
@@ -451,7 +440,6 @@ div#sitemap .tree {
 	background-position: 0px -20px;
 }
 
-
 #sitemap li .col-moderator span.ui-checkbox.children {
 	background-position: 0px -40px;
 }
@@ -468,10 +456,10 @@ div#sitemap .tree {
 	background-position: 0px -100px;
 }
 
-
 /* moderation - last state */
 #sitemap li .col-lastchange .state-icon {
 	margin-right: -2px;
+	vertical-align: middle;
 }
 
 #sitemap li .col-lastchange .state-icon.add { background-position: -40px 0px; }

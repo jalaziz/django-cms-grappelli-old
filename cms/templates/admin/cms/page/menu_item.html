@@ -30,18 +30,18 @@
 		{% endfor %}</div>
 		
 		<div class="col-actions">{% if not filtered %}
-			{% if has_move_page_permission %}<a href="#" class="move" title="{% trans "Cut" %}" id="move-link-{{ page.id }}"><span>{% trans "cut" %}</span></a>{% endif %}{% endif %}
-			{% if has_change_permission %}<a href="#" class="copy" title="{% trans "Copy" %}" id="copy-link-{{ page.id }}"><span>{% trans "copy" %}</span></a>{% endif %}
+			{% if has_move_page_permission %}<a href="#" class="icon move" title="{% trans "Cut" %}" id="move-link-{{ page.id }}"><span>{% trans "cut" %}</span></a>{% endif %}{% endif %}
+			{% if has_change_permission %}<a href="#" class="icon copy" title="{% trans "Copy" %}" id="copy-link-{{ page.id }}"><span>{% trans "copy" %}</span></a>{% endif %}
 			
 			{% if has_add_page_permission and has_add_on_same_level_permission %}
-				<a href="#" class="add" title="{% trans "Add Child" %}" id="add-link-{{ page.id }}"><span>{% trans "add" %}</span></a>
+				<a href="#" class="icon add" title="{% trans "Add Child" %}" id="add-link-{{ page.id }}"><span>{% trans "add" %}</span></a>
 			{% else %}
 				{% if has_add_page_permission %}
 					{# if he can add page under current page, go directly to thi url #}
-					<a href="./add/?target={{ page.id }}&amp;position=last-child" class="add" title="{% trans "Add Child" %}" id="add-link-{{ page.id }}"><span>{% trans "add" %}</span></a>
+					<a href="./add/?target={{ page.id }}&amp;position=last-child" class="icon add" title="{% trans "Add Child" %}" id="add-link-{{ page.id }}"><span>{% trans "add" %}</span></a>
 				{% endif %}
 			{% endif %}
-			{% if has_delete_permission %}<a href="{{ page.id }}/delete/" title="{% trans "Delete" %}" class="delete" id="delete-link-{{ page.id }}"><span>{% trans "delete" %}</span></a>{% endif %}
+			{% if has_delete_permission %}<a href="{{ page.id }}/delete/" title="{% trans "Delete" %}" class="icon delete" id="delete-link-{{ page.id }}"><span>{% trans "delete" %}</span></a>{% endif %}
 		</div>	
 		
 		<div class="col-navigation">
@@ -68,7 +68,7 @@
 		{% if CMS_MODERATOR %}
 	   <div class="col-draft">
 		   {% if moderator_should_approve %}
-		   <a href="./{{ page.id }}/approve/" class="icon approve" title="{% trans 'Approve directly' %}"></a>
+		   <a href="./{{ page.id }}/approve/" class="icon approve" title="{% trans 'Approve directly' %}"><span>{% trans 'Approve' %}</span></a>
 		   {% endif %}
 		   <span class="state">{{ page_moderator_state.label }}</span>
 		   <a href="./{{ page.id }}/preview/" class="icon selector-add viewpage" id="view-page-{{page.id}}"><span>{% trans "View" %}</span></a>

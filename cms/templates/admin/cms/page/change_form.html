@@ -144,27 +144,19 @@
                
                {% if not add %}
                   {% if CMS_PERMISSION and has_change_permissions_permission %}
-	               <div class="inline-group">
-		               <div class="tabular inline-related">
-			               <fieldset id="inherited_permissions" class="module aligned collapse">
-			                 <h2>{% trans 'All permissions' %}</h2>
-			                 <div class="loading">{% trans 'Loading...' %}</div>
-			                 <div class="load">./permissions/</div>
-			               </fieldset>
-		               </div>
-	               </div>
+		               <fieldset id="inherited_permissions" class="module collapse closed">
+		                 <h2 class="collapse-handler">{% trans 'All permissions' %}</h2>
+		                 <div class="loading">{% trans 'Loading...' %}</div>
+		                 <div class="load">./permissions/</div>
+		               </fieldset>
 	               {% endif %}
 
 	               {% if CMS_MODERATOR and has_moderate_permission %}
-	               <div class="inline-group">
-		               <div class="tabular inline-related">
-			               <fieldset id="inherited_permissions" class="module aligned collapse">
-			                 <h2 class="load_remote">{% trans 'Page states' %}</h2>
-			                 <div class="loading">{% trans 'Loading...' %}</div>
-			                 <div class="load">./moderation-states/</div>
-			               </fieldset>
-		               </div>
-	               </div>
+		               <fieldset id="inherited_permissions" class="module collapse closed">
+		                 <h2 class="collapse-handler load_remote">{% trans 'Page states' %}</h2>
+		                 <div class="loading">{% trans 'Loading...' %}</div>
+		                 <div class="load">./moderation-states/</div>
+		               </fieldset>
 	               {% endif %}
 
 	               {% if moderation_delete_request %}
@@ -175,7 +167,7 @@
 				               $('input,select,textarea').attr("disabled", "disabled");
 				               $('a[id^=add_],span[class^=add-plugin],a[class^=selector-],p[class^=selector-]').remove();
 			               }
-			               $('fieldset[class=collapsed]').remove();
+			               $('fieldset[class=closed]').remove();
 			               lockControls();
 			               setTimeout(lockControls,200);
 		               });

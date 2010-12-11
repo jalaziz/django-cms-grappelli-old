@@ -131,7 +131,7 @@ class PageAdmin(model_admin):
         }),
         (_('Advanced Settings'), {
             'fields': advanced_fields,
-            'classes': ('collapse', 'closed'),
+            'classes': ('collapse', 'closed', ),
         }),
 
 
@@ -140,7 +140,7 @@ class PageAdmin(model_admin):
     if settings.CMS_SEO_FIELDS:
         fieldsets.append((_("SEO Settings"), {
                           'fields':seo_fields,
-                          'classes': ('collapse',),
+                          'classes': ('collapse', 'closed', ),
                         }))
 
     inlines = PAGE_ADMIN_INLINES
