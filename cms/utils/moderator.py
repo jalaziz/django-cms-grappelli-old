@@ -196,7 +196,6 @@ def approve_page(request, page):
     else:
         # first case - just mark page as approved from this user
         PageModeratorState(user=request.user, page=page, action=PageModeratorState.ACTION_APPROVE).save()
-    page.save(change_state=False)
 
 
 def get_model_queryset(model, request=None):
