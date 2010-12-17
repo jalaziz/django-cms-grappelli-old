@@ -185,6 +185,7 @@ class PageAdmin(model_admin):
             pat(r'^([0-9]+)/moderation-states/$', self.get_moderation_states),
             pat(r'^([0-9]+)/change-moderation/$', self.change_moderation),
             pat(r'^([0-9]+)/approve/$', self.approve_page), # approve page
+            pat(r'^([0-9]+)/publish/$', self.publish_page), # publish page
             pat(r'^([0-9]+)/remove-delete-state/$', self.remove_delete_state),
             pat(r'^([0-9]+)/dialog/copy/$', get_copy_dialog), # copy dialog
             pat(r'^([0-9]+)/preview/$', self.preview_page), # copy dialog
@@ -252,17 +253,10 @@ class PageAdmin(model_admin):
                 obj.move_to(target, position)
 
         Title.objects.set_or_create(
+            request,
             obj,
+            form,
             language,
-            slug=form.cleaned_data['slug'],
-            title=form.cleaned_data['title'],
-            application_urls=form.cleaned_data.get('application_urls', None),
-            overwrite_url=form.cleaned_data.get('overwrite_url', None),
-            redirect=form.cleaned_data.get('redirect', None),
-            meta_description=form.cleaned_data.get('meta_description', None),
-            meta_keywords=form.cleaned_data.get('meta_keywords', None),
-            page_title=form.cleaned_data.get('page_title', None),
-            menu_title=form.cleaned_data.get('menu_title', None),
         )
 
         # is there any moderation message? save/update state
@@ -313,7 +307,7 @@ class PageAdmin(model_admin):
                 l = list(given_fieldsets[0][1]['fields'][2])
                 l.remove('published')
                 given_fieldsets[0][1]['fields'][2] = tuple(l)
-            for placeholder_name in get_placeholders(placeholders_template):
+            for placeholder_name in sorted(get_placeholders(placeholders_template)):
                 name = settings.CMS_PLACEHOLDER_CONF.get("%s %s" % (obj.template, placeholder_name), {}).get("name", None)
                 if not name:
                     name = settings.CMS_PLACEHOLDER_CONF.get(placeholder_name, {}).get("name", None)
@@ -453,6 +447,9 @@ class PageAdmin(model_admin):
             form.base_fields['parent'].initial = request.GET.get('target', None)
             form.base_fields['site'].initial = request.session.get('cms_admin_site', None)
             form.base_fields['template'].initial = settings.CMS_TEMPLATES[0][0]
+        if obj and not obj.has_advanced_settings_permission(request):
+            for field in self.advanced_fields:
+                del form.base_fields[field]
         return form
 
     # remove permission inlines, if user isn't allowed to change them
@@ -471,14 +468,6 @@ class PageAdmin(model_admin):
                             continue
                 yield inline.get_formset(request, obj)
 
-
-    def save_form(self, request, form, change):
-        """
-        Given a ModelForm return an unsaved instance. ``change`` is True if
-        the object is being changed, and False if it's being added.
-        """
-        instance = super(PageAdmin, self).save_form(request, form, change)
-        return instance
 
     def get_widget(self, request, page, lang, name):
         """
@@ -893,7 +882,25 @@ class PageAdmin(model_admin):
         if 'node' in request.REQUEST:
             # if request comes from tree..
             return render_admin_menu_item(request, page)
-        return HttpResponseRedirect('../../')
+        referer = request.META.get('HTTP_REFERER', reverse('admin:cms_page_changelist'))
+        path = '../../'
+        if 'admin' not in referer:
+            path = '%s?edit-off' % referer.split('?')[0]
+        return HttpResponseRedirect( path )
+
+
+    @transaction.commit_on_success
+    def publish_page(self, request, page_id):
+        page = get_object_or_404(Page, id=page_id)
+        # ensure user has permissions to publish this page
+        if not page.has_moderate_permission(request):
+            raise HttpResponseForbidden("Denied")
+        page.publish()
+        referer = request.META['HTTP_REFERER']
+        path = '../../'
+        if 'admin' not in referer:
+            path = '%s?edit-off' % referer.split('?')[0]
+        return HttpResponseRedirect( path )
 
 
     def delete_view(self, request, object_id, *args, **kwargs):
@@ -1147,7 +1154,7 @@ class PageAdmin(model_admin):
 
             for plug in plugins:
                 plug.copy_plugin(placeholder, language, ptree)
-                
+
             if page and "reversion" in settings.INSTALLED_APPS:
                 make_revision_with_plugins(page)
                 reversion.revision.user = request.user
