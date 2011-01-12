@@ -35,9 +35,9 @@ class DumbFixturePlugin(CMSPluginBase):
 class PluginsTestBaseCase(CMSTestCase):
 
     def setUp(self):
-        u = User(username="test", is_staff = True, is_active = True, is_superuser = True)
-        u.set_password("test")
-        u.save()
+        self.super_user = User(username="test", is_staff = True, is_active = True, is_superuser = True)
+        self.super_user.set_password("test")
+        self.super_user.save()
         
         self.slave = User(username="slave", is_staff=True, is_active=True, is_superuser=False)
         self.slave.set_password("slave")
