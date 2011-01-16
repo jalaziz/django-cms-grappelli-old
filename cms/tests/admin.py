@@ -4,13 +4,12 @@ from cms.admin.dialog.forms import ModeratorForm, PermissionForm, \
 from cms.admin.dialog.views import _form_class_selector
 from cms.models.pagemodel import Page
 from cms.models.permissionmodels import GlobalPagePermission
-from cms.tests import base
-from cms.tests.base import CMSTestCase, URL_CMS_PAGE_DELETE, URL_CMS_PAGE
-from cms.tests.util.context_managers import SettingsOverride
+from cms.test import testcases as base
+from cms.test.testcases import CMSTestCase, URL_CMS_PAGE_DELETE, URL_CMS_PAGE
+from cms.test.util.context_managers import SettingsOverride
 from django.contrib.auth.models import User, Permission
 from django.contrib.sites.models import Site
-
-
+from django.core.urlresolvers import reverse
 
 class AdminTestCase(CMSTestCase):
     
@@ -147,3 +146,17 @@ class AdminTestCase(CMSTestCase):
         with SettingsOverride(CMS_MODERATOR=True, CMS_PERMISSION=True):
             result = _form_class_selector()
             self.assertEqual(result, PermissionAndModeratorForm)
+
+    def test_06_search_fields(self):
+        superuser = self._get_guys(admin_only=True)
+        from django.contrib.admin import site
+        with self.login_user_context(superuser):
+            for model, admin in site._registry.items():
+                if model._meta.app_label != 'cms':
+                    continue
+                if not admin.search_fields:
+                    continue
+                url = reverse('admin:cms_%s_changelist' % model._meta.module_name)
+                response = self.client.get('%s?q=1' % url)
+                errmsg = response.content
+                self.assertEqual(response.status_code, 200, errmsg)
