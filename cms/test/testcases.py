@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from cms.admin.forms import save_permissions
 from cms.models import Title, Page
 from cms.models.moderatormodels import ACCESS_PAGE_AND_DESCENDANTS
@@ -17,7 +18,6 @@ from django.template.defaultfilters import slugify
 from django.test.testcases import TestCase
 from menus.menu_pool import menu_pool
 from urlparse import urlparse
-import copy
 import sys
 import urllib
 import warnings
