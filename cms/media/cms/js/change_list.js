@@ -92,8 +92,9 @@ $(function() {
 		   }
 	};
 	
-   var selected_page = false;
-   var action = false;
+    patchCsrf($);
+    var selected_page = false;
+    var action = false;
 		
 	var _oldAjax = $.ajax;
 		
@@ -148,8 +149,7 @@ $(function() {
 			if (callback) callback(response);
 		});
 	}
-	
-	
+
    // let's start event delegation
 	
    $('#changelist li').click(function(e) {
