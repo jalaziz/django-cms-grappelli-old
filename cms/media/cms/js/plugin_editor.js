@@ -1,15 +1,15 @@
 (function($) {
     $(document).ready(function() {
         // Add Plugin Handler
-        patchCsrf(jQuery);
-        $('a.add-plugin').click(function(){
+    	$.fn.cmsPatchCSRF();
+        $('span.add-plugin').click(function(){
          var select = $(this).parent().children("select[name=plugins]");
             var pluginvalue = select.attr('value');
             var placeholder_id = $(this).parent().parent().data('id');
             var splits = window.location.href.split("/");
- 
+
             var language = $('input.language_button.selected').attr('name');
- 
+
             if (!language) {
                 language = $('input[name=language]').attr("value");
             }
@@ -17,7 +17,7 @@
             if (!language) {
                 //alert("Unable to determine the correct language for this plugin! Please report the bug!");
             }
- 
+
             var target_div = $(this).parent().parent().parent().children('div.plugin-editor');
             if (pluginvalue) {
                 var pluginname = select.children('[selected]').text();
@@ -38,24 +38,24 @@
                 });
             }
         });
-        
+
         // Copy Plugins Handler
         $('a.copy-plugins').click(function(){
             var copy_from_language = $(this).parent().children("select[name=copy-plugins]").attr("value");
             var placeholder = $(this).parent().parent().data('id');
             var splits = window.location.href.split("/");
             var page_id = splits[splits.length-2];
- 
+
             var to_language = $('input.language_button.selected').attr('name');
- 
+
             if (!to_language) {
              to_language = $('input[name=language]').attr("value");
             }
- 
+
             if (!to_language) {
                 //alert("Unable to determine the correct language for this plugin! Please report the bug!");
             }
-            
+
             var target_div = $(this).parent().parent().parent().children('div.plugin-editor');
             if ((copy_from_language) && (copy_from_language != "")) {
              var ul_list = $(this).parent().parent().children("ul.plugin-list");
@@ -74,7 +74,7 @@
                 });
             }
         });
-        
+
         // Drag'n'Drop sorting/moving
         $('ul.plugin-list').sortable({
             handle:'span.drag',
@@ -83,7 +83,7 @@
             zIndex:2000,
             dropOnEmpty:true,
             connectWith: '.plugin-list',
- 
+
             update:function(event, ui){
                  var array = $(this).sortable('toArray');
                  var d = "";
@@ -108,21 +108,21 @@
                         $.post("move-plugin/", { ids:d }, function(data){}, "json");
                     }
                 }
- 
+
             }
         });
- 
+
         setclickfunctions();
     });
- 
- 
+
+
     function plugin_select_click_handler(){
         var target = $(this).parent().parent().parent().parent().children("div.plugin-editor");
         var id = $(this).parent().attr("id").split("plugin_")[1];
         loadPluginForm(target, id);
         return false;
     }
- 
+
     function plugin_delete_click_handler(){
         var plugin_id = $(this).parent().attr("id").split("plugin_")[1];
         var question = gettext("Are you sure you want to delete this plugin?")
@@ -138,33 +138,33 @@
             }, "html");
         }
     }
- 
+
     function setclickfunctions(){
         $('ul.plugin-list .text').unbind('click', plugin_select_click_handler);
         $('ul.plugin-list span.delete').unbind('click', plugin_delete_click_handler);
- 
+
         $('ul.plugin-list .text').click(plugin_select_click_handler);
         $('ul.plugin-list span.delete').click(plugin_delete_click_handler);
     }
- 
+
     function load_plugin(li){
         var target = li.parent().parent().parent().children("div.plugin-editor");
         var id = li.attr("id").split("plugin_")[1];
         loadPluginForm(target, id);
     }
- 
+
 function loadPluginForm(target, id){
         var object = '<iframe id="iframe_'+id+'" src="edit-plugin/'+id+'/" frameborder="0"></iframe>';
         target.html(object);
         $('ul.plugin-list .active').removeClass("active");
         $('#plugin_'+id).addClass("active");
     };
- 
+
 // global functions
     setiframeheight = function(height, id){
         $('#iframe_'+id).height(height+"px");
     }
- 
+
     hide_iframe = function (id, type, title, msg){
         html = "<b>"+type+"</b>"
         if( title != "" && title != null){
@@ -173,5 +173,5 @@ function loadPluginForm(target, id){
         $('#plugin_'+id+" span.text").html(html);
         $('#iframe_'+id).parent().html("<p>"+msg+"</p>");
     }
- 
+
 })(jQuery);
